@@ -9,7 +9,6 @@ import 'more.dart';
 
 class ChatsPage extends StatefulWidget {
   const ChatsPage({super.key});
-
   @override
   State<ChatsPage> createState() => _ChatsPageState();
 }
@@ -28,34 +27,34 @@ class _ChatsPageState extends State<ChatsPage> {
       "isAura": true,
     },
     {
-      "name": "Alex",
-      "username": "alex.jpg",
-      "image": "https://randomuser.me/api/portraits/men/32.jpg",
-      "message": "Yo what's up?",
+      "name": "Youssef",
+      "username": "youssef.trabelsi",
+      "image": "assets/images/people/person1.jpg",
+      "message": "Salut bro, ça va?",
       "time": "2m",
       "online": true,
     },
     {
-      "name": "Emma",
-      "username": "emma.design",
-      "image": "https://randomuser.me/api/portraits/women/44.jpg",
-      "message": "That color palette is fire!",
+      "name": "Sarra",
+      "username": "sarra.benali",
+      "image": "assets/images/people/person2.jpg",
+      "message": "El design mte3ek 7low barcha!",
       "time": "15m",
       "online": false,
     },
     {
-      "name": "David",
-      "username": "david.dev",
-      "image": "https://randomuser.me/api/portraits/men/86.jpg",
-      "message": "Sent you the code",
+      "name": "Amine",
+      "username": "amine.dev",
+      "image": "assets/images/people/person3.jpg",
+      "message": "B3athtlek el code tawa",
       "time": "1h",
       "online": true,
     },
     {
-      "name": "Sophia",
-      "username": "sophia.art",
-      "image": "https://randomuser.me/api/portraits/women/65.jpg",
-      "message": "Let's collab soon!",
+      "name": "Mariam",
+      "username": "mariam.artt",
+      "image": "assets/images/people/person4.jpg",
+      "message": "Najmou ni5edmu projet ensemble?",
       "time": "3h",
       "online": false,
     },
@@ -78,7 +77,6 @@ class _ChatsPageState extends State<ChatsPage> {
       PageRouteBuilder(
         pageBuilder: (_, __, ___) => pages[index],
         transitionDuration: Duration.zero,
-        reverseTransitionDuration: Duration.zero,
       ),
     );
   }
@@ -86,6 +84,9 @@ class _ChatsPageState extends State<ChatsPage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final orbSize = size.width * 0.8;
+
+    const Color purpleMain = Color(0xFFA855F7);
 
     return Scaffold(
       extendBody: true,
@@ -103,186 +104,95 @@ class _ChatsPageState extends State<ChatsPage> {
             ],
           ),
         ),
-        child: SafeArea(
-          child: Column(
-            children: [
-              // TOP BAR
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: size.width * 0.06,
-                  vertical: 20,
-                ),
-                child: Row(
-                  children: [
-                    _glowText("MESSAGES", size.width * 0.09),
-                    const Spacer(),
-                    IconButton(
-                      icon: Icon(
-                        Icons.add_rounded,
-                        color: Colors.white70,
-                        size: size.width * 0.075,
-                      ),
-                      onPressed: () {},
+        child: Stack(
+          children: [
+            // SAME FLOATING ORBS AS HOMEPAGE
+            ...List.generate(
+              6,
+              (i) => Positioned(
+                top: 40 + i * (size.height * 0.16),
+                left: i.isEven ? -orbSize * 0.4 : null,
+                right: i.isOdd ? -orbSize * 0.4 : null,
+                child: Container(
+                  width: orbSize,
+                  height: orbSize,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: RadialGradient(
+                      colors: [
+                        purpleMain.withOpacity(0.35),
+                        Colors.transparent,
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
+            ),
 
-              // CHAT LIST
-              Expanded(
-                child: ListView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  itemCount: _chats.length,
-                  itemBuilder: (context, i) {
-                    final chat = _chats[i];
-                    final isAura = chat["isAura"] == true;
-
-                    return GestureDetector(
-                      onTap: () {
-                        if (!isAura) return;
-
-                        // INSTANT NAVIGATION — NO ANIMATION
-                        Navigator.of(context).pushReplacement(
-                          PageRouteBuilder(
-                            pageBuilder: (_, __, ___) => const ChatbotPage(),
-                            transitionDuration: Duration.zero,
-                            reverseTransitionDuration: Duration.zero,
+            SafeArea(
+              child: Column(
+                children: [
+                  // HEADER — SAME AS HOMEPAGE
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: size.width * 0.06,
+                      vertical: 20,
+                    ),
+                    child: Row(
+                      children: [
+                        _glowText("MESSAGES", size.width * 0.09),
+                        const Spacer(),
+                        IconButton(
+                          icon: Icon(
+                            Icons.add_rounded,
+                            color: Colors.white70,
+                            size: size.width * 0.075,
                           ),
-                        );
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(vertical: 8),
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(isAura ? 0.18 : 0.1),
-                          borderRadius: BorderRadius.circular(20),
-                          border: isAura
-                              ? Border.all(
-                                  color: const Color(0xFFA855F7),
-                                  width: 2,
-                                )
-                              : null,
-                          boxShadow: isAura
-                              ? [
-                                  BoxShadow(
-                                    color: const Color(
-                                      0xFFA855F7,
-                                    ).withOpacity(0.5),
-                                    blurRadius: 20,
-                                  ),
-                                ]
-                              : null,
+                          onPressed: () {},
                         ),
-                        child: Row(
-                          children: [
-                            Stack(
-                              children: [
-                                CircleAvatar(
-                                  radius: 32,
-                                  backgroundImage:
-                                      chat["image"].toString().startsWith(
-                                        "assets",
-                                      )
-                                      ? AssetImage(chat["image"])
-                                            as ImageProvider
-                                      : NetworkImage(chat["image"]),
-                                ),
-                                if (chat["online"] == true)
-                                  Positioned(
-                                    right: 4,
-                                    bottom: 4,
-                                    child: Container(
-                                      width: 16,
-                                      height: 16,
-                                      decoration: BoxDecoration(
-                                        color: Colors.greenAccent,
-                                        shape: BoxShape.circle,
-                                        border: Border.all(
-                                          color: Colors.black,
-                                          width: 3,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                              ],
-                            ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    chat["name"],
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    chat["message"],
-                                    style: const TextStyle(
-                                      color: Colors.white70,
-                                      fontSize: 15,
-                                    ),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Column(
-                              children: [
-                                Text(
-                                  chat["time"],
-                                  style: const TextStyle(
-                                    color: Colors.white60,
-                                    fontSize: 13,
-                                  ),
-                                ),
-                                if (isAura)
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 8),
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 10,
-                                        vertical: 4,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        gradient: const LinearGradient(
-                                          colors: [
-                                            Color(0xFFA855F7),
-                                            Color(0xFFE0AAFF),
-                                          ],
-                                        ),
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      child: const Text(
-                                        "AI",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                              ],
-                            ),
-                          ],
+                        IconButton(
+                          icon: Icon(
+                            Icons.search,
+                            color: Colors.white70,
+                            size: size.width * 0.075,
+                          ),
+                          onPressed: () {},
                         ),
+                      ],
+                    ),
+                  ),
+
+                  Expanded(
+                    child: ListView(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: size.width * 0.05,
                       ),
-                    );
-                  },
-                ),
+                      children: [
+                        const SizedBox(height: 12),
+
+                        // CHAT ITEMS — USING EXACT SAME GLASS CONTAINER AS HOME POSTS
+                        ..._chats.asMap().entries.map((entry) {
+                          final chat = entry.value;
+                          final isAura = chat["isAura"] == true;
+
+                          return Padding(
+                            padding: EdgeInsets.only(bottom: 0),
+                            child: _glassChatCard(chat, size, isAura),
+                          );
+                        }),
+
+                        const SizedBox(height: 140),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
 
-      // BOTTOM NAVIGATION
+      // SAME BOTTOM NAV AS HOMEPAGE
       bottomNavigationBar: ClipRRect(
         borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
         child: BackdropFilter(
@@ -302,7 +212,7 @@ class _ChatsPageState extends State<ChatsPage> {
               currentIndex: _selectedIndex,
               onTap: _onNavTap,
               backgroundColor: Colors.transparent,
-              selectedItemColor: const Color(0xFFA855F7),
+              selectedItemColor: purpleMain,
               unselectedItemColor: Colors.white60,
               selectedFontSize: 12,
               unselectedFontSize: 11,
@@ -342,21 +252,189 @@ class _ChatsPageState extends State<ChatsPage> {
     );
   }
 
-  Widget _glowText(String text, double fontSize) {
-    return Text(
-      text,
-      style: TextStyle(
-        fontSize: fontSize,
-        fontWeight: FontWeight.w900,
-        foreground: Paint()
-          ..shader = const LinearGradient(
-            colors: [Color(0xFFE0AAFF), Color(0xFFA855F7)],
-          ).createShader(const Rect.fromLTWH(0, 0, 300, 100)),
-        shadows: [
-          Shadow(color: const Color(0xFFA855F7).withOpacity(1), blurRadius: 35),
-          Shadow(color: Colors.white.withOpacity(0.6), blurRadius: 70),
+  // REUSING YOUR EXACT GLASS CONTAINER FROM HOMEPAGE
+  Widget _glassCard({required Widget child, EdgeInsetsGeometry? padding}) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      padding: padding ?? const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(28),
+        border: Border.all(color: Colors.white.withOpacity(0.2), width: 1.5),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.5),
+            blurRadius: 30,
+            offset: const Offset(0, 15),
+          ),
+          BoxShadow(
+            color: const Color(0xFFA855F7).withOpacity(0.2),
+            blurRadius: 40,
+          ),
         ],
       ),
+      child: child,
+    );
+  }
+
+  // CHAT CARD — SAME STYLE AS HOME POSTS
+  Widget _glassChatCard(Map<String, dynamic> chat, Size size, bool isAura) {
+    return _glassCard(
+      padding: EdgeInsets.all(size.width * 0.05),
+      child: GestureDetector(
+        onTap: isAura
+            ? () => Navigator.pushReplacement(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (_, __, ___) => const ChatbotPage(),
+                  transitionDuration: Duration.zero,
+                ),
+              )
+            : null,
+        child: Row(
+          children: [
+            // Avatar + Online dot
+            Stack(
+              children: [
+                CircleAvatar(
+                  radius: size.width * 0.065,
+                  backgroundImage: AssetImage(chat["image"]),
+                ),
+                if (chat["online"] == true && !isAura)
+                  Positioned(
+                    right: 4,
+                    bottom: 4,
+                    child: Container(
+                      width: 16,
+                      height: 16,
+                      decoration: BoxDecoration(
+                        color: Colors.greenAccent,
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.black, width: 3),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+
+            const SizedBox(width: 16),
+
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    chat["name"],
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    chat["message"],
+                    style: const TextStyle(color: Colors.white70, fontSize: 15),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  chat["time"],
+                  style: const TextStyle(color: Colors.white60, fontSize: 13),
+                ),
+                if (isAura)
+                  Container(
+                    margin: const EdgeInsets.only(top: 10),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 8,
+                    ),
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFFA855F7), Color(0xFFE0AAFF)],
+                      ),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: const Text(
+                      "AI",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // YOUR EXACT GLOW FROM HOMEPAGE
+  Widget _glowText(String text, double size) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Text(
+          text,
+          style: TextStyle(
+            fontSize: size,
+            fontWeight: FontWeight.w900,
+            foreground: Paint()
+              ..color = const Color.fromARGB(
+                170,
+                32,
+                186,
+                57,
+              ).withOpacity(0.95),
+            shadows: [
+              Shadow(
+                color: const Color.fromARGB(
+                  255,
+                  143,
+                  112,
+                  155,
+                ).withOpacity(0.9),
+                blurRadius: 30,
+              ),
+            ],
+          ),
+        ),
+
+        // Layer 3: The actual text with your exact gradient — no white anywhere
+        ShaderMask(
+          blendMode: BlendMode.srcIn,
+          shaderCallback: (bounds) => const LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: [
+              Color.fromARGB(172, 60, 182, 64), // ECO start
+              Color.fromARGB(172, 72, 255, 78), // ECO soft
+              Color.fromARGB(255, 192, 84, 255), // Transition
+              Color.fromARGB(255, 209, 129, 255), // MIND main
+              Color.fromARGB(255, 192, 84, 255), // MIND end
+            ],
+            stops: [0.0, 0.38, 0.48, 0.65, 1.0],
+          ).createShader(bounds),
+          child: Text(
+            text,
+            style: TextStyle(
+              fontSize: size,
+              fontWeight: FontWeight.w900,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

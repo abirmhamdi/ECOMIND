@@ -36,7 +36,6 @@ class _WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final double orbSize = size.width * 0.85;
 
     return Scaffold(
       extendBody: true,
@@ -76,16 +75,16 @@ class _WelcomePageState extends State<WelcomePage> {
             ),
           ),
 
-          // Floating orbs
+          // Floating orbs (background glow)
           ...List.generate(
             5,
             (i) => Positioned(
               top: 40 + i * (size.height * 0.19),
-              left: i.isEven ? -orbSize * 0.45 : null,
-              right: i.isOdd ? -orbSize * 0.45 : null,
+              left: i.isEven ? -size.width * 0.45 : null,
+              right: i.isOdd ? -size.width * 0.45 : null,
               child: Container(
-                width: orbSize,
-                height: orbSize,
+                width: size.width * 0.85,
+                height: size.width * 0.85,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: RadialGradient(
@@ -99,40 +98,87 @@ class _WelcomePageState extends State<WelcomePage> {
             ),
           ),
 
-          // Main Content — EXACTLY LIKE YOUR SCREENSHOT
+          // Main Content
           SafeArea(
             child: Column(
               children: [
                 SizedBox(height: size.height * 0.18),
 
-                // Logo Circle + Text
-                Container(
-                  padding: EdgeInsets.all(size.width * 0.12),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: const LinearGradient(
-                      colors: [Color(0xFFA855F7), Color(0xFFE0AAFF)],
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: const Color(0xFFA855F7).withOpacity(0.9),
-                        blurRadius: 90,
-                        spreadRadius: 35,
+                // NEW: Circle image behind ECOMIND text
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    // Soft outer glow ring
+                    Container(
+                      width: size.width * 0.7,
+                      height: size.width * 0.7,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: RadialGradient(
+                          colors: [
+                            const Color(0xFFA855F7).withOpacity(0.5),
+                            Colors.transparent,
+                          ],
+                        ),
                       ),
-                    ],
-                  ),
-                  child: glowText("ECOMIND", size.width * 0.125),
+                    ),
+
+                    // Your beautiful circle logo
+                    Container(
+                      width: size.width * 0.40,
+                      height: size.width * 0.40,
+                      child: Opacity(
+                        opacity:
+                            0.70, // ← change this number: 0.15 = very subtle, 0.4 = stronger
+                        child: Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: const DecorationImage(
+                              image: AssetImage(
+                                "assets/app-icon/ecomind-circle.png",
+                              ),
+                              fit: BoxFit.cover,
+                              opacity:
+                                  0.9, // extra softness inside the image itself
+                            ),
+                          ),
+                        ),
+                      ),
+                      // Keep the big glow outside
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFFA855F7).withOpacity(0.4),
+                            blurRadius: 40,
+                            spreadRadius: 5,
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    // Glowing ECOMIND text on top
+                    Padding(
+                      padding: EdgeInsets.all(size.width * 0.12),
+                      child: _glowText("ECOMIND", size.width * 0.14),
+                    ),
+                  ],
                 ),
 
-                SizedBox(height: size.height * 0.14),
+                SizedBox(height: size.height * 0.09),
 
                 // Subtitle
                 Text(
-                  "Your world. Your rhythm.\nYour comfort zone.",
+                  "Mindful Living.\nSustainable Future.",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: size.width * 0.052,
-                    color: Colors.white.withOpacity(0.95),
+                    fontSize: size.width * 0.05,
+                    color: const Color.fromARGB(
+                      255,
+                      255,
+                      255,
+                      255,
+                    ).withOpacity(0.8),
                     height: 1.7,
                     fontWeight: FontWeight.w500,
                     shadows: [
@@ -146,7 +192,7 @@ class _WelcomePageState extends State<WelcomePage> {
 
                 const Spacer(),
 
-                // Bottom Buttons — IDENTICAL TO YOUR DESIGN
+                // Bottom Buttons
                 Container(
                   height: 90,
                   decoration: const BoxDecoration(
@@ -162,8 +208,8 @@ class _WelcomePageState extends State<WelcomePage> {
                             context,
                           ).push(slideUpWithPushDownRoute(const SignInPage())),
                           child: Container(
-                            decoration: BoxDecoration(),
-                            child: Center(
+                            decoration: const BoxDecoration(),
+                            child: const Center(
                               child: Text(
                                 "Sign In",
                                 style: TextStyle(
@@ -183,19 +229,19 @@ class _WelcomePageState extends State<WelcomePage> {
                           ).push(slideUpWithPushDownRoute(const SignUpPage())),
                           child: Container(
                             decoration: const BoxDecoration(
-                              color: Colors.white,
+                              color: Color.fromARGB(255, 255, 255, 255),
                               borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(50),
                               ),
                             ),
-                            child: Center(
+                            child: const Center(
                               child: Text(
                                 "Sign Up",
                                 style: TextStyle(
                                   fontSize: 25,
                                   fontWeight: FontWeight.bold,
                                   color: Color(0xFFA855F7),
-                                  shadows: const [
+                                  shadows: [
                                     Shadow(
                                       color: Colors.white70,
                                       blurRadius: 20,
@@ -240,6 +286,64 @@ class _WelcomePageState extends State<WelcomePage> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _glowText(String text, double size) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Text(
+          text,
+          style: TextStyle(
+            fontSize: size,
+            fontWeight: FontWeight.w900,
+            foreground: Paint()
+              ..color = const Color.fromARGB(
+                170,
+                32,
+                186,
+                57,
+              ).withOpacity(0.95),
+            shadows: [
+              Shadow(
+                color: const Color.fromARGB(
+                  255,
+                  143,
+                  112,
+                  155,
+                ).withOpacity(0.9),
+                blurRadius: 30,
+              ),
+            ],
+          ),
+        ),
+
+        // Layer 3: The actual text with your exact gradient — no white anywhere
+        ShaderMask(
+          blendMode: BlendMode.srcIn,
+          shaderCallback: (bounds) => const LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: [
+              Color.fromARGB(172, 60, 182, 64), // ECO start
+              Color.fromARGB(172, 72, 255, 78), // ECO soft
+              Color.fromARGB(255, 192, 84, 255), // Transition
+              Color.fromARGB(255, 209, 129, 255), // MIND main
+              Color.fromARGB(255, 192, 84, 255), // MIND end
+            ],
+            stops: [0.0, 0.38, 0.48, 0.65, 1.0],
+          ).createShader(bounds),
+          child: Text(
+            text,
+            style: TextStyle(
+              fontSize: size,
+              fontWeight: FontWeight.w900,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

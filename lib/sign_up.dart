@@ -140,36 +140,11 @@ class _SignUpPageState extends State<SignUpPage> {
                           child: Column(
                             children: [
                               // Title
-                              Text(
+                              _glowText(
                                 "Create Your Account",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: size.width * 0.070,
-                                  fontWeight: FontWeight.w900,
-                                  foreground: Paint()
-                                    ..shader =
-                                        const LinearGradient(
-                                          colors: [
-                                            accentPurple,
-                                            Colors.white,
-                                            primaryPurple,
-                                          ],
-                                        ).createShader(
-                                          Rect.fromLTWH(0, 0, size.width, 100),
-                                        ),
-                                  shadows: [
-                                    Shadow(
-                                      color: primaryPurple.withOpacity(0.9),
-                                      blurRadius: 30,
-                                    ),
-                                    Shadow(
-                                      color: Colors.white.withOpacity(0.4),
-                                      blurRadius: 60,
-                                    ),
-                                  ],
-                                ),
+                                size.width * 0.1,
                               ),
-                              SizedBox(height: size.height * 0.05),
+                              SizedBox(height: size.height * 0.03),
 
                               // Full Name Field (Floating Label)
                               TextField(
@@ -177,7 +152,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 style: const TextStyle(color: Colors.white),
                                 decoration: _floatingLabelInput("Full Name"),
                               ),
-                              SizedBox(height: size.height * 0.025),
+                              SizedBox(height: size.height * 0.02),
 
                               // Email Field
                               TextField(
@@ -186,7 +161,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 style: const TextStyle(color: Colors.white),
                                 decoration: _floatingLabelInput("Email"),
                               ),
-                              SizedBox(height: size.height * 0.025),
+                              SizedBox(height: size.height * 0.02),
 
                               // Password Field
                               TextField(
@@ -195,7 +170,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 style: const TextStyle(color: Colors.white),
                                 decoration: _floatingLabelInput("Password"),
                               ),
-                              SizedBox(height: size.height * 0.03),
+                              SizedBox(height: size.height * 0.02),
 
                               // Terms & Conditions
                               Row(
@@ -241,7 +216,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   ),
                                 ],
                               ),
-                              SizedBox(height: size.height * 0.03),
+                              SizedBox(height: size.height * 0.02),
 
                               // Create Account Button
                               SizedBox(
@@ -252,9 +227,14 @@ class _SignUpPageState extends State<SignUpPage> {
                                       ? _createAccount
                                       : null,
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: primaryPurple,
-                                    disabledBackgroundColor: primaryPurple
-                                        .withOpacity(0.4),
+                                    backgroundColor: const Color.fromARGB(
+                                      255,
+                                      76,
+                                      175,
+                                      80,
+                                    ),
+                                    disabledBackgroundColor:
+                                        const Color.fromARGB(185, 39, 98, 41),
                                     elevation: 20,
                                     shadowColor: primaryPurple.withOpacity(0.8),
                                     shape: RoundedRectangleBorder(
@@ -271,7 +251,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   ),
                                 ),
                               ),
-                              SizedBox(height: size.height * 0.03),
+                              SizedBox(height: size.height * 0.02),
 
                               Text(
                                 "Or sign up with",
@@ -292,7 +272,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   _socialButton('assets/icons/apple.png'),
                                 ],
                               ),
-                              SizedBox(height: size.height * 0.04),
+                              SizedBox(height: size.height * 0.02),
 
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -376,16 +356,16 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget _socialButton(String path) {
     return Container(
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: Colors.white.withOpacity(0.15),
-        border: Border.all(color: Colors.white.withOpacity(0.3)),
+
         boxShadow: [
           BoxShadow(color: primaryPurple.withOpacity(0.3), blurRadius: 20),
         ],
       ),
-      child: Image.asset(path, width: 28, height: 28),
+      child: Image.asset(path, width: 40, height: 40),
     );
   }
 
@@ -407,6 +387,39 @@ class _SignUpPageState extends State<SignUpPage> {
         TextButton(
           onPressed: () => Navigator.pop(context),
           child: Text("Close", style: TextStyle(color: accentPurple)),
+        ),
+      ],
+    );
+  }
+
+  Widget _glowText(String text, double size) {
+    final double displaySize = size * 0.85;
+
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        ShaderMask(
+          blendMode: BlendMode.srcIn,
+          shaderCallback: (bounds) => const LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: [
+              Color.fromARGB(172, 60, 182, 64),
+              Color.fromARGB(172, 72, 255, 78),
+              Color.fromARGB(255, 192, 84, 255),
+              Color.fromARGB(255, 209, 129, 255),
+              Color.fromARGB(255, 192, 84, 255),
+            ],
+            stops: [0.0, 0.38, 0.48, 0.65, 1.0],
+          ).createShader(bounds),
+          child: Text(
+            text,
+            style: TextStyle(
+              fontSize: displaySize, // smaller, cleaner text
+              fontWeight: FontWeight.w900,
+              color: Colors.white,
+            ),
+          ),
         ),
       ],
     );

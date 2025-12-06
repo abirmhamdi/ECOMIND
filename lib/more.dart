@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:mygame/Groups.dart';
 import 'package:mygame/chats_page.dart';
-
 import 'package:mygame/marketplace.dart';
 import 'dart:ui';
 import 'home_page.dart';
@@ -42,6 +41,9 @@ class _MorePageState extends State<MorePage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final double orbSize = size.width * 0.8;
+
+    const Color purpleMain = Color(0xFFA855F7);
 
     return Scaffold(
       extendBody: true,
@@ -49,8 +51,8 @@ class _MorePageState extends State<MorePage> {
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
             colors: [
               Color(0xFF1A0B2E),
               Color(0xFF2A1B4B),
@@ -61,107 +63,143 @@ class _MorePageState extends State<MorePage> {
         ),
         child: Stack(
           children: [
-            // Floating orbs
+            // Background orbs
             ...List.generate(
-              7,
+              6,
               (i) => Positioned(
-                top: 20 + i * (size.height * 0.15),
-                left: i.isEven ? -size.width * 0.35 : null,
-                right: i.isOdd ? -size.width * 0.35 : null,
+                top: 40 + i * (size.height * 0.16),
+                left: i.isEven ? -orbSize * 0.4 : null,
+                right: i.isOdd ? -orbSize * 0.4 : null,
                 child: Container(
-                  width: size.width * 0.9,
-                  height: size.width * 0.9,
+                  width: orbSize,
+                  height: orbSize,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     gradient: RadialGradient(
                       colors: [
-                        const Color(0xFFA855F7).withOpacity(0.42),
+                        purpleMain.withOpacity(0.35),
                         Colors.transparent,
                       ],
-                      stops: const [0.3, 1.0],
                     ),
                   ),
                 ),
               ),
             ),
 
-            // STARTS DIRECTLY WITH PROFILE CARD — NO HEADER
             SafeArea(
-              child: ListView(
-                padding: EdgeInsets.only(
-                  left: size.width * 0.06,
-                  right: size.width * 0.06,
-                  top: 20, // Small top padding so it doesn't touch the notch
-                ),
+              child: Column(
                 children: [
-                  // Epic Profile Card — FIRST THING USER SEES
-                  _epicProfileCard(size),
+                  // Header
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: size.width * 0.06,
+                      vertical: 20,
+                    ),
+                    child: Row(
+                      children: [
+                        _glowText("MORE", size.width * 0.09),
+                        const Spacer(),
+                        IconButton(
+                          icon: Icon(
+                            Icons.notifications_none,
+                            color: Colors.white70,
+                            size: size.width * 0.075,
+                          ),
+                          onPressed: () {},
+                        ),
+                        IconButton(
+                          icon: Icon(
+                            Icons.search,
+                            color: Colors.white70,
+                            size: size.width * 0.075,
+                          ),
+                          onPressed: () {},
+                        ),
+                      ],
+                    ),
+                  ),
 
-                  const SizedBox(height: 40),
-
-                  // Stats Row
-                  Row(
-                    children: [
-                      _statCard("2,840", "Points", Icons.star, Colors.amber),
-                      const SizedBox(width: 16),
-                      _statCard(
-                        "47",
-                        "Friends",
-                        Icons.favorite,
-                        Colors.pinkAccent,
+                  Expanded(
+                    child: ListView(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: size.width * 0.05,
                       ),
-                      const SizedBox(width: 16),
-                      _statCard("12", "Shops", Icons.store, Colors.cyan),
-                    ],
-                  ),
+                      children: [
+                        _epicProfileCard(size),
+                        SizedBox(height: size.height * 0.025),
 
-                  const SizedBox(height: 40),
+                        Row(
+                          children: [
+                            _statCard(
+                              "2,840",
+                              "Points",
+                              Icons.star,
+                              Colors.amber,
+                            ),
+                            const SizedBox(width: 16),
+                            _statCard(
+                              "47",
+                              "Friends",
+                              Icons.favorite,
+                              Colors.pinkAccent,
+                            ),
+                            const SizedBox(width: 16),
+                            _statCard("12", "Shops", Icons.store, Colors.cyan),
+                          ],
+                        ),
 
-                  // Menu Items
-                  _premiumMenuItem(
-                    Icons.shield_outlined,
-                    "Privacy & Safety",
-                    () => _soon(),
-                  ),
-                  _premiumMenuItem(
-                    Icons.notifications_outlined,
-                    "Notifications",
-                    () => _soon(),
-                  ),
-                  _premiumMenuItem(
-                    Icons.palette_outlined,
-                    "Appearance",
-                    () => _soon(),
-                  ),
-                  _premiumMenuItem(
-                    Icons.security,
-                    "Account Security",
-                    () => _soon(),
-                  ),
-                  _premiumMenuItem(Icons.language, "Language", () => _soon()),
-                  _premiumMenuItem(
-                    Icons.help_outline,
-                    "Help Center",
-                    () => _soon(),
-                  ),
-                  _premiumMenuItem(
-                    Icons.info_outline,
-                    "About HEROTOPIA",
-                    () => _soon(),
-                  ),
+                        SizedBox(height: size.height * 0.025),
 
-                  const SizedBox(height: 40),
+                        _premiumMenuItem(
+                          Icons.shield_outlined,
+                          "Privacy & Safety",
+                          () => _soon(),
+                        ),
+                        _premiumMenuItem(
+                          Icons.notifications_outlined,
+                          "Notifications",
+                          () => _soon(),
+                        ),
+                        _premiumMenuItem(
+                          Icons.palette_outlined,
+                          "Appearance",
+                          () => _soon(),
+                        ),
+                        _premiumMenuItem(
+                          Icons.security,
+                          "Account Security",
+                          () => _soon(),
+                        ),
+                        _premiumMenuItem(
+                          Icons.language,
+                          "Language",
+                          () => _soon(),
+                        ),
+                        _premiumMenuItem(
+                          Icons.help_outline,
+                          "Help Center",
+                          () => _soon(),
+                        ),
+                        _premiumMenuItem(
+                          Icons.info_outline,
+                          "About ECOMIND",
+                          () => _soon(),
+                        ),
 
-                  // Log Out
-                  _premiumMenuItem(
-                    Icons.logout,
-                    "Log Out",
-                    () => _showEpicLogoutDialog(context),
-                    iconColor: Colors.redAccent,
-                    glowColor: Colors.redAccent.withOpacity(0.8),
+                        SizedBox(height: size.height * 0.025),
+
+                        _premiumMenuItem(
+                          Icons.logout,
+                          "Log Out",
+                          () => _showEpicLogoutDialog(context),
+                          iconColor: Colors.redAccent,
+                          glowColor: Colors.redAccent.withOpacity(0.8),
+                        ),
+
+                        SizedBox(height: size.height * 0.15),
+                      ],
+                    ),
                   ),
-
-                  const SizedBox(height: 120),
                 ],
               ),
             ),
@@ -169,7 +207,6 @@ class _MorePageState extends State<MorePage> {
         ),
       ),
 
-      // Bottom Navigation Bar
       bottomNavigationBar: ClipRRect(
         borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
         child: BackdropFilter(
@@ -229,32 +266,11 @@ class _MorePageState extends State<MorePage> {
     );
   }
 
-  // ────────────────────────────── ALL WIDGETS BELOW (unchanged) ──────────────────────────────
+  // ────────────────────────────── WIDGETS ──────────────────────────────
 
   Widget _epicProfileCard(Size size) {
-    return Container(
+    return _glassCard(
       padding: const EdgeInsets.all(28),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(36),
-        gradient: const LinearGradient(
-          colors: [Color(0xFFA855F7), Color(0xFFE0AAFF), Color(0xFF9D4EDD)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0xFFA855F7).withOpacity(0.7),
-            blurRadius: 50,
-            spreadRadius: 12,
-          ),
-          BoxShadow(
-            color: Colors.black.withOpacity(0.6),
-            blurRadius: 30,
-            offset: const Offset(0, 20),
-          ),
-        ],
-        border: Border.all(color: Colors.white.withOpacity(0.4), width: 2),
-      ),
       child: Row(
         children: [
           Stack(
@@ -279,7 +295,7 @@ class _MorePageState extends State<MorePage> {
                   padding: const EdgeInsets.all(6),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.green,
+                    color: const Color(0xFF4CAF50),
                     border: Border.all(color: Colors.white, width: 3),
                   ),
                   child: const Icon(Icons.check, size: 16, color: Colors.white),
@@ -292,10 +308,17 @@ class _MorePageState extends State<MorePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _glowText("Abir", 32),
+                Text(
+                  "Diva",
+                  style: TextStyle(
+                    fontSize: size.width * 0.08,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
                 const SizedBox(height: 8),
                 const Text(
-                  "@abeerhero • Level 42",
+                  "@VampyDiva • Level 16",
                   style: TextStyle(color: Colors.white70, fontSize: 16),
                 ),
                 const SizedBox(height: 12),
@@ -327,14 +350,8 @@ class _MorePageState extends State<MorePage> {
 
   Widget _statCard(String value, String label, IconData icon, Color color) {
     return Expanded(
-      child: Container(
+      child: _glassCard(
         padding: const EdgeInsets.symmetric(vertical: 20),
-        decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.08),
-          borderRadius: BorderRadius.circular(24),
-          border: Border.all(color: Colors.white.withOpacity(0.2)),
-          boxShadow: [BoxShadow(color: color.withOpacity(0.4), blurRadius: 20)],
-        ),
         child: Column(
           children: [
             Icon(icon, color: color, size: 32),
@@ -366,23 +383,8 @@ class _MorePageState extends State<MorePage> {
   }) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 16),
+      child: _glassCard(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 22),
-        decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.09),
-          borderRadius: BorderRadius.circular(28),
-          border: Border.all(color: Colors.white.withOpacity(0.25), width: 1.8),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.5),
-              blurRadius: 30,
-              offset: const Offset(0, 15),
-            ),
-            if (glowColor != null)
-              BoxShadow(color: glowColor, blurRadius: 40, spreadRadius: 8),
-          ],
-        ),
         child: Row(
           children: [
             Container(
@@ -411,21 +413,83 @@ class _MorePageState extends State<MorePage> {
     );
   }
 
-  Widget _glowText(String text, double size) {
-    return Text(
-      text,
-      style: TextStyle(
-        fontSize: size,
-        fontWeight: FontWeight.w900,
-        foreground: Paint()
-          ..shader = const LinearGradient(
-            colors: [Color(0xFFE0AAFF), Colors.white, Color(0xFFA855F7)],
-          ).createShader(const Rect.fromLTWH(0, 0, 500, 100)),
-        shadows: [
-          Shadow(color: const Color(0xFFA855F7).withOpacity(1), blurRadius: 40),
-          Shadow(color: Colors.white.withOpacity(0.6), blurRadius: 80),
+  Widget _glassCard({required Widget child, EdgeInsetsGeometry? padding}) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      padding: padding ?? const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(28),
+        border: Border.all(color: Colors.white.withOpacity(0.2), width: 1.5),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.5),
+            blurRadius: 30,
+            offset: const Offset(0, 15),
+          ),
+          BoxShadow(
+            color: const Color(0xFFA855F7).withOpacity(0.2),
+            blurRadius: 40,
+          ),
         ],
       ),
+      child: child,
+    );
+  }
+
+  Widget _glowText(String text, double size) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Text(
+          text,
+          style: TextStyle(
+            fontSize: size,
+            fontWeight: FontWeight.w900,
+            foreground: Paint()
+              ..color = const Color.fromARGB(
+                170,
+                32,
+                186,
+                57,
+              ).withOpacity(0.95),
+            shadows: [
+              Shadow(
+                color: const Color.fromARGB(
+                  255,
+                  143,
+                  112,
+                  155,
+                ).withOpacity(0.9),
+                blurRadius: 30,
+              ),
+            ],
+          ),
+        ),
+        ShaderMask(
+          blendMode: BlendMode.srcIn,
+          shaderCallback: (bounds) => const LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: [
+              Color.fromARGB(172, 60, 182, 64),
+              Color.fromARGB(172, 72, 255, 78),
+              Color.fromARGB(255, 192, 84, 255),
+              Color.fromARGB(255, 209, 129, 255),
+              Color.fromARGB(255, 192, 84, 255),
+            ],
+            stops: [0.0, 0.38, 0.48, 0.65, 1.0],
+          ).createShader(bounds),
+          child: Text(
+            text,
+            style: TextStyle(
+              fontSize: size,
+              fontWeight: FontWeight.w900,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -437,7 +501,7 @@ class _MorePageState extends State<MorePage> {
             Icon(Icons.auto_awesome, color: Colors.white),
             SizedBox(width: 12),
             Text(
-              "Launching soon...",
+              "Coming soon...",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ],
@@ -451,49 +515,86 @@ class _MorePageState extends State<MorePage> {
   }
 
   void _showEpicLogoutDialog(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     showDialog(
       context: context,
       builder: (ctx) => BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
         child: AlertDialog(
-          backgroundColor: Colors.black.withOpacity(0.7),
+          backgroundColor: Colors.black.withOpacity(0.75),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(32),
           ),
-          title: _glowText("Leave the Matrix?", 28),
-          content: const Text(
-            "You'll be missed, legend.",
-            style: TextStyle(color: Colors.white70, fontSize: 17),
+          titlePadding: const EdgeInsets.only(top: 24),
+          title: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                "Goodbye, Diva!",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: size.width * 0.065,
+                  fontWeight: FontWeight.w900,
+                  color: Colors.white,
+                  shadows: [
+                    Shadow(
+                      color: Colors.pinkAccent.withOpacity(0.7),
+                      blurRadius: 15,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 50),
+            ],
           ),
+          actionsPadding: const EdgeInsets.only(
+            bottom: 16,
+            right: 16,
+            left: 16,
+          ),
+          actionsAlignment: MainAxisAlignment.spaceBetween,
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(ctx),
               child: const Text(
                 "Stay",
-                style: TextStyle(color: Colors.white70),
+                style: TextStyle(
+                  color: Color.fromARGB(206, 255, 255, 255),
+                  fontSize: 16,
+                ),
               ),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.redAccent,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 22,
+                  vertical: 10,
+                ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(24),
                 ),
+                elevation: 5,
               ),
-              onPressed: () => Navigator.of(context).pushAndRemoveUntil(
-                PageRouteBuilder(
-                  pageBuilder: (_, __, ___) => const WelcomePage(),
-                  transitionsBuilder: (_, a, __, child) => FadeTransition(
-                    opacity: a,
-                    child: ScaleTransition(scale: a, child: child),
+              onPressed: () {
+                // INSTANT LOGOUT — NO ANIMATION AT ALL
+                Navigator.of(context).pushAndRemoveUntil(
+                  PageRouteBuilder(
+                    pageBuilder: (context, _, __) => const WelcomePage(),
+                    transitionDuration: Duration.zero,
+                    reverseTransitionDuration: Duration.zero,
                   ),
-                  transitionDuration: const Duration(milliseconds: 800),
-                ),
-                (route) => false,
-              ),
+                  (route) => false,
+                );
+              },
               child: const Text(
                 "Log Out",
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: Colors.white,
+                ),
               ),
             ),
           ],

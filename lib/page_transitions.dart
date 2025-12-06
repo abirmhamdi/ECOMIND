@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 Route slideUpWithPushDownRoute(Widget page) {
   return PageRouteBuilder(
-    opaque: false, // هذا السطر هو المفتاح السحري!
+    opaque: false,
     transitionDuration: const Duration(milliseconds: 550),
     reverseTransitionDuration: const Duration(milliseconds: 450),
     pageBuilder: (context, animation, secondaryAnimation) => page,

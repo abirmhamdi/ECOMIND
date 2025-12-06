@@ -454,21 +454,59 @@ class _ChatbotPageState extends State<ChatbotPage>
     );
   }
 
-  Widget _glowText(String text, double fontSize) {
-    return Text(
-      text,
-      style: TextStyle(
-        fontSize: fontSize,
-        fontWeight: FontWeight.w900,
-        foreground: Paint()
-          ..shader = const LinearGradient(
-            colors: [Color(0xFFE0AAFF), Color(0xFFA855F7)],
-          ).createShader(const Rect.fromLTWH(0, 0, 300, 100)),
-        shadows: [
-          Shadow(color: const Color(0xFFA855F7).withOpacity(1), blurRadius: 35),
-          Shadow(color: Colors.white.withOpacity(0.6), blurRadius: 70),
-        ],
-      ),
+  Widget _glowText(String text, double size) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Text(
+          text,
+          style: TextStyle(
+            fontSize: size,
+            fontWeight: FontWeight.w900,
+            foreground: Paint()
+              ..color = const Color.fromARGB(
+                170,
+                32,
+                186,
+                57,
+              ).withOpacity(0.95),
+            shadows: [
+              Shadow(
+                color: const Color.fromARGB(
+                  255,
+                  143,
+                  112,
+                  155,
+                ).withOpacity(0.9),
+                blurRadius: 30,
+              ),
+            ],
+          ),
+        ),
+
+        // Layer 3: The actual text with your exact gradient — no white anywhere
+        ShaderMask(
+          blendMode: BlendMode.srcIn,
+          shaderCallback: (bounds) => const LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: [
+              Color.fromARGB(255, 192, 84, 255), // Transition
+              Color.fromARGB(255, 209, 129, 255), // MIND main
+              Color.fromARGB(255, 192, 84, 255), // MIND end
+            ],
+            stops: [0.0, 0.65, 1.0],
+          ).createShader(bounds),
+          child: Text(
+            text,
+            style: TextStyle(
+              fontSize: size,
+              fontWeight: FontWeight.w900,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

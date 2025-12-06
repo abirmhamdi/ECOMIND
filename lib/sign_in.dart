@@ -32,7 +32,7 @@ class LoadingFullScreen extends StatelessWidget {
             children: [
               const SizedBox(height: 60),
               const Text(
-                "Loading your world...",
+                "Loading..",
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
@@ -201,36 +201,9 @@ class _SignInPageState extends State<SignInPage> {
                           child: Column(
                             children: [
                               // Title
-                              Text(
-                                "Welcome Back!",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: size.width * 0.080,
-                                  fontWeight: FontWeight.w900,
-                                  foreground: Paint()
-                                    ..shader =
-                                        const LinearGradient(
-                                          colors: [
-                                            accentPurple,
-                                            Colors.white,
-                                            primaryPurple,
-                                          ],
-                                        ).createShader(
-                                          Rect.fromLTWH(0, 0, size.width, 100),
-                                        ),
-                                  shadows: [
-                                    Shadow(
-                                      color: primaryPurple.withOpacity(0.9),
-                                      blurRadius: 30,
-                                    ),
-                                    Shadow(
-                                      color: Colors.white.withOpacity(0.4),
-                                      blurRadius: 60,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(height: size.height * 0.05),
+                              _glowText("Welcome Back!", size.width * 0.1),
+
+                              SizedBox(height: size.height * 0.03),
 
                               // Email Field (Floating Label)
                               TextField(
@@ -239,7 +212,7 @@ class _SignInPageState extends State<SignInPage> {
                                 style: const TextStyle(color: Colors.white),
                                 decoration: _floatingLabelInput("Email"),
                               ),
-                              SizedBox(height: size.height * 0.03),
+                              SizedBox(height: size.height * 0.02),
 
                               // Password Field (Floating Label)
                               TextField(
@@ -248,7 +221,7 @@ class _SignInPageState extends State<SignInPage> {
                                 style: const TextStyle(color: Colors.white),
                                 decoration: _floatingLabelInput("Password"),
                               ),
-                              SizedBox(height: size.height * 0.03),
+                              SizedBox(height: size.height * 0.02),
 
                               // Remember me + Forgot password
                               Row(
@@ -293,7 +266,7 @@ class _SignInPageState extends State<SignInPage> {
                                   ),
                                 ],
                               ),
-                              SizedBox(height: size.height * 0.03),
+                              SizedBox(height: size.height * 0.02),
 
                               // Sign In Button
                               SizedBox(
@@ -302,7 +275,12 @@ class _SignInPageState extends State<SignInPage> {
                                 child: ElevatedButton(
                                   onPressed: _startLoginFlow,
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: primaryPurple,
+                                    backgroundColor: const Color.fromARGB(
+                                      255,
+                                      76,
+                                      175,
+                                      80,
+                                    ),
                                     elevation: 20,
                                     shadowColor: primaryPurple.withOpacity(0.8),
                                     shape: RoundedRectangleBorder(
@@ -319,7 +297,7 @@ class _SignInPageState extends State<SignInPage> {
                                   ),
                                 ),
                               ),
-                              SizedBox(height: size.height * 0.03),
+                              SizedBox(height: size.height * 0.02),
 
                               Text(
                                 "Or continue with",
@@ -340,7 +318,7 @@ class _SignInPageState extends State<SignInPage> {
                                   _socialButton('assets/icons/apple.png'),
                                 ],
                               ),
-                              SizedBox(height: size.height * 0.03),
+                              SizedBox(height: size.height * 0.02),
 
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -421,16 +399,49 @@ class _SignInPageState extends State<SignInPage> {
 
   Widget _socialButton(String path) {
     return Container(
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: Colors.white.withOpacity(0.15),
-        border: Border.all(color: Colors.white.withOpacity(0.3)),
+
         boxShadow: [
           BoxShadow(color: primaryPurple.withOpacity(0.3), blurRadius: 20),
         ],
       ),
-      child: Image.asset(path, width: 28, height: 28),
+      child: Image.asset(path, width: 40, height: 40),
+    );
+  }
+
+  Widget _glowText(String text, double size) {
+    final double displaySize = size * 0.85;
+
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        ShaderMask(
+          blendMode: BlendMode.srcIn,
+          shaderCallback: (bounds) => const LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: [
+              Color.fromARGB(172, 60, 182, 64),
+              Color.fromARGB(172, 72, 255, 78),
+              Color.fromARGB(255, 192, 84, 255),
+              Color.fromARGB(255, 209, 129, 255),
+              Color.fromARGB(255, 192, 84, 255),
+            ],
+            stops: [0.0, 0.38, 0.48, 0.65, 1.0],
+          ).createShader(bounds),
+          child: Text(
+            text,
+            style: TextStyle(
+              fontSize: displaySize, // smaller, cleaner text
+              fontWeight: FontWeight.w900,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

@@ -4,131 +4,83 @@ import 'package:mygame/chats_page.dart';
 import 'package:mygame/marketplace.dart';
 import 'dart:ui';
 import 'home_page.dart';
-
 import 'more.dart';
 
 class GroupsPage extends StatefulWidget {
   const GroupsPage({super.key});
-
   @override
   State<GroupsPage> createState() => _GroupsPageState();
 }
 
 class _GroupsPageState extends State<GroupsPage> {
-  int _selectedIndex = 1; // Groups tab active
+  int _selectedIndex = 1;
 
   final List<Map<String, dynamic>> _myGroups = [
     {
-      "name": "Flutter Devs",
-      "members": "12.4K",
-      "icon": Icons.code,
-      "color": Colors.cyan,
+      "name": "Tounes Tech",
+      "members": "18.7K",
+      "image": "assets/images/groups/tounes-tech.jpg",
     },
     {
-      "name": "Night Owls",
-      "members": "8.9K",
-      "icon": Icons.nights_stay,
-      "color": Colors.deepPurple,
+      "name": "9a3da w kresi",
+      "members": "81.4K",
+      "image": "assets/images/groups/9a3da-w-kresi.jpg",
     },
     {
-      "name": "Fitness Heroes",
-      "members": "15.2K",
-      "icon": Icons.fitness_center,
-      "color": Colors.pink,
+      "name": "Bac 2026 Warriors",
+      "members": "124.9K",
+      "image": "assets/images/groups/bac-2026-warriors.jpg",
     },
   ];
 
   final List<Map<String, dynamic>> _trendingGroups = [
     {
-      "name": "Crypto Kings",
-      "members": "42.1K",
-      "icon": Icons.trending_up,
-      "color": Colors.amber,
+      "name": "Eco Tunisia",
+      "members": "73.1K",
+      "image": "assets/images/groups/eco-tunisia.jpg",
     },
     {
-      "name": "Code Queens",
-      "members": "38.7K",
-      "icon": Icons.palette,
-      "color": Colors.orange,
+      "name": "Cat Lovers",
+      "members": "95.2K",
+      "image": "assets/images/groups/cat-lovers.jpg",
     },
     {
-      "name": "Anime Legends",
-      "members": "29.5K",
-      "icon": Icons.auto_awesome,
-      "color": Colors.purple,
+      "name": "Tounes Gaming",
+      "members": "68.4K",
+      "image": "assets/images/groups/tounes-gaming.jpg",
     },
     {
-      "name": "Startup Founders",
-      "members": "19.8K",
-      "icon": Icons.rocket_launch,
-      "color": Colors.teal,
+      "name": "Startup Tunisia",
+      "members": "27.5K",
+      "image": "assets/images/groups/startup-tunisia.jpg",
     },
+
     {
-      "name": "Mental Health Space",
-      "members": "67.3K",
-      "icon": Icons.favorite,
-      "color": Colors.redAccent,
+      "name": "Movies Lovers tn",
+      "members": "48.6K",
+      "image": "assets/images/groups/movies-lovers-tn.jpg",
     },
   ];
 
   void _onNavTap(int index) {
-    if (_selectedIndex == index) return; // Prevent rebuild if already on page
+    if (_selectedIndex == index) return;
     setState(() => _selectedIndex = index);
 
-    if (index == 0) {
-      Navigator.pushReplacement(
-        context,
-        PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) =>
-              const HomePage(),
-          transitionDuration: Duration.zero,
-          reverseTransitionDuration: Duration.zero,
-        ),
-      );
-    }
-    if (index == 1) {
-      Navigator.pushReplacement(
-        context,
-        PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) =>
-              const GroupsPage(),
-          transitionDuration: Duration.zero,
-          reverseTransitionDuration: Duration.zero,
-        ),
-      );
-    } else if (index == 2) {
-      Navigator.pushReplacement(
-        context,
-        PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) =>
-              const ChatsPage(),
-          transitionDuration: Duration.zero,
-          reverseTransitionDuration: Duration.zero,
-        ),
-      );
-    } else if (index == 3) {
-      // AI
-      Navigator.pushReplacement(
-        context,
-        PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) =>
-              const MarketplacePage(),
-          transitionDuration: Duration.zero,
-          reverseTransitionDuration: Duration.zero,
-        ),
-      );
-    } else if (index == 4) {
-      // More
-      Navigator.pushReplacement(
-        context,
-        PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) =>
-              const MorePage(),
-          transitionDuration: Duration.zero,
-          reverseTransitionDuration: Duration.zero,
-        ),
-      );
-    }
+    final pages = [
+      const HomePage(),
+      const GroupsPage(),
+      const ChatsPage(),
+      const MarketplacePage(),
+      const MorePage(),
+    ];
+
+    Navigator.pushReplacement(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => pages[index],
+        transitionDuration: Duration.zero,
+      ),
+    );
   }
 
   @override
@@ -136,10 +88,11 @@ class _GroupsPageState extends State<GroupsPage> {
     final size = MediaQuery.of(context).size;
     final orbSize = size.width * 0.85;
 
+    const Color purpleMain = Color(0xFFA855F7);
+
     return Scaffold(
       extendBody: true,
       extendBodyBehindAppBar: true,
-
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -155,7 +108,7 @@ class _GroupsPageState extends State<GroupsPage> {
         ),
         child: Stack(
           children: [
-            // Floating orbs — same as every screen
+            // Floating purple orbs — same as HomePage
             ...List.generate(
               6,
               (i) => Positioned(
@@ -169,7 +122,7 @@ class _GroupsPageState extends State<GroupsPage> {
                     shape: BoxShape.circle,
                     gradient: RadialGradient(
                       colors: [
-                        Color(0xFFA855F7).withOpacity(0.38),
+                        purpleMain.withOpacity(0.38),
                         Colors.transparent,
                       ],
                     ),
@@ -181,7 +134,7 @@ class _GroupsPageState extends State<GroupsPage> {
             SafeArea(
               child: Column(
                 children: [
-                  // Header
+                  // Header with ECOMIND glow
                   Padding(
                     padding: EdgeInsets.symmetric(
                       horizontal: size.width * 0.06,
@@ -190,7 +143,7 @@ class _GroupsPageState extends State<GroupsPage> {
                     child: Row(
                       children: [
                         _glowText("GROUPS", size.width * 0.09),
-                        Spacer(),
+                        const Spacer(),
                         IconButton(
                           icon: Icon(
                             Icons.add_rounded,
@@ -214,25 +167,25 @@ class _GroupsPageState extends State<GroupsPage> {
                   Expanded(
                     child: ListView(
                       padding: EdgeInsets.symmetric(
-                        horizontal: size.width * 0.06,
+                        horizontal: size.width * 0.05,
                       ),
                       children: [
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 12),
 
-                        // My Groups Section
+                        // My Groups
                         _sectionTitle("My Groups"),
-                        SizedBox(height: 16),
-                        ..._myGroups.map((group) => _groupCard(group, true)),
-
+                        const SizedBox(height: 16),
+                        ..._myGroups.map(
+                          (group) => _groupCard(group, true, size),
+                        ),
                         const SizedBox(height: 40),
 
-                        // Discover Section
+                        // Discover Trending
                         _sectionTitle("Discover Trending"),
-                        SizedBox(height: 16),
+                        const SizedBox(height: 16),
                         ..._trendingGroups.map(
-                          (group) => _groupCard(group, false),
+                          (group) => _groupCard(group, false, size),
                         ),
-
                         const SizedBox(height: 140),
                       ],
                     ),
@@ -244,7 +197,7 @@ class _GroupsPageState extends State<GroupsPage> {
         ),
       ),
 
-      // 5-TAB NAVIGATION — ZERO TRANSITION
+      // Same glass bottom navigation
       bottomNavigationBar: ClipRRect(
         borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
         child: BackdropFilter(
@@ -264,7 +217,7 @@ class _GroupsPageState extends State<GroupsPage> {
               currentIndex: _selectedIndex,
               onTap: _onNavTap,
               backgroundColor: Colors.transparent,
-              selectedItemColor: const Color(0xFFA855F7),
+              selectedItemColor: purpleMain,
               unselectedItemColor: Colors.white60,
               selectedFontSize: 12,
               unselectedFontSize: 11,
@@ -292,7 +245,6 @@ class _GroupsPageState extends State<GroupsPage> {
                   ),
                   label: "Market",
                 ),
-
                 BottomNavigationBarItem(
                   icon: Icon(Icons.menu, size: size.width * 0.07),
                   label: "More",
@@ -308,7 +260,7 @@ class _GroupsPageState extends State<GroupsPage> {
   Widget _sectionTitle(String title) {
     return Text(
       title,
-      style: TextStyle(
+      style: const TextStyle(
         color: Colors.white,
         fontSize: 22,
         fontWeight: FontWeight.bold,
@@ -317,10 +269,13 @@ class _GroupsPageState extends State<GroupsPage> {
     );
   }
 
-  Widget _groupCard(Map<String, dynamic> group, bool isJoined) {
+  // EXACT SAME CARD AS YOUR HOME PAGE POSTS
+  Widget _groupCard(Map<String, dynamic> group, bool isJoined, Size size) {
+    final String profileImage = group["image"] ?? "assets/images/avatar.png";
+
     return Container(
-      margin: EdgeInsets.only(bottom: 16),
-      padding: EdgeInsets.all(20),
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: EdgeInsets.all(size.width * 0.05),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.1),
         borderRadius: BorderRadius.circular(28),
@@ -329,72 +284,68 @@ class _GroupsPageState extends State<GroupsPage> {
           BoxShadow(
             color: Colors.black.withOpacity(0.5),
             blurRadius: 30,
-            offset: Offset(0, 12),
+            offset: const Offset(0, 15),
           ),
           BoxShadow(
-            color: (group["color"] as Color).withOpacity(0.3),
+            color: const Color(0xFFA855F7).withOpacity(0.2),
             blurRadius: 40,
           ),
         ],
       ),
       child: Row(
         children: [
-          Container(
-            padding: EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: (group["color"] as Color).withOpacity(0.3),
-              border: Border.all(color: group["color"], width: 2),
-            ),
-            child: Icon(group["icon"], color: Colors.white, size: 32),
+          CircleAvatar(
+            radius: size.width * 0.065,
+            backgroundImage: AssetImage(profileImage),
           ),
-          SizedBox(width: 20),
+          const SizedBox(width: 16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   group["name"],
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 19,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 6),
+                const SizedBox(height: 6),
                 Text(
                   "${group["members"]} members",
-                  style: TextStyle(color: Colors.white60, fontSize: 15),
+                  style: const TextStyle(color: Colors.white60, fontSize: 15),
                 ),
               ],
             ),
           ),
           ElevatedButton(
+            onPressed: isJoined
+                ? null
+                : () {
+                    setState(() {
+                      _myGroups.insert(0, group);
+                      _trendingGroups.removeWhere(
+                        (g) => g["name"] == group["name"],
+                      );
+                    });
+                  },
             style: ElevatedButton.styleFrom(
               backgroundColor: isJoined
                   ? Colors.white.withOpacity(0.2)
-                  : Color(0xFFA855F7),
+                  : const Color(0xFF4CAF50),
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
               ),
-              elevation: isJoined ? 0 : 12,
-              shadowColor: isJoined ? Colors.transparent : Color(0xFFA855F7),
+              elevation: isJoined ? 0 : 15,
+              shadowColor: isJoined
+                  ? Colors.transparent
+                  : const Color(0xFF4CAF50).withOpacity(0.7),
             ),
-            onPressed: () {
-              if (!isJoined) {
-                setState(() => _myGroups.insert(0, group));
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text("Joined ${group["name"]}!"),
-                    backgroundColor: Colors.green.shade600,
-                  ),
-                );
-              }
-            },
             child: Text(
               isJoined ? "Joined" : "Join",
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
         ],
@@ -402,21 +353,62 @@ class _GroupsPageState extends State<GroupsPage> {
     );
   }
 
+  // EXACT SAME GLOW FROM YOUR HOME PAGE
   Widget _glowText(String text, double size) {
-    return Text(
-      text,
-      style: TextStyle(
-        fontSize: size,
-        fontWeight: FontWeight.w900,
-        foreground: Paint()
-          ..shader = LinearGradient(
-            colors: [Color(0xFFE0AAFF), Colors.white, Color(0xFFA855F7)],
-          ).createShader(Rect.fromLTWH(0, 0, 400, 100)),
-        shadows: [
-          Shadow(color: Color(0xFFA855F7).withOpacity(0.9), blurRadius: 30),
-          Shadow(color: Colors.white.withOpacity(0.4), blurRadius: 60),
-        ],
-      ),
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Text(
+          text,
+          style: TextStyle(
+            fontSize: size,
+            fontWeight: FontWeight.w900,
+            foreground: Paint()
+              ..color = const Color.fromARGB(
+                170,
+                32,
+                186,
+                57,
+              ).withOpacity(0.95),
+            shadows: [
+              Shadow(
+                color: const Color.fromARGB(
+                  255,
+                  143,
+                  112,
+                  155,
+                ).withOpacity(0.9),
+                blurRadius: 30,
+              ),
+            ],
+          ),
+        ),
+
+        // Layer 3: The actual text with your exact gradient — no white anywhere
+        ShaderMask(
+          blendMode: BlendMode.srcIn,
+          shaderCallback: (bounds) => const LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: [
+              Color.fromARGB(172, 60, 182, 64), // ECO start
+              Color.fromARGB(172, 72, 255, 78), // ECO soft
+              Color.fromARGB(255, 192, 84, 255), // Transition
+              Color.fromARGB(255, 209, 129, 255), // MIND main
+              Color.fromARGB(255, 192, 84, 255), // MIND end
+            ],
+            stops: [0.0, 0.38, 0.48, 0.65, 1.0],
+          ).createShader(bounds),
+          child: Text(
+            text,
+            style: TextStyle(
+              fontSize: size,
+              fontWeight: FontWeight.w900,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

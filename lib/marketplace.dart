@@ -19,75 +19,79 @@ class _MarketplacePageState extends State<MarketplacePage> {
 
   final List<Map<String, dynamic>> _products = [
     {
-      "title": "iPhone 16 Pro Max",
-      "price": 1599,
-      "seller": "TechElite",
-      "category": "Electronics",
-      "image":
-          "https://www.apple.com/newsroom/images/2024/09/apple-debuts-iphone-16-pro-and-iphone-16-pro-max/tile/Apple-iPhone-16-Pro-hero-geo-240909-lp.jpg.og.jpg", // iPhone 16 Pro
+      "title": "Handmade Beeswax Food Wraps Set (3 Sizes)",
+      "price": 25.0,
+      "seller": "Mouna Hafsi",
+      "category": "Kitchen",
+      "image": "assets/images/marketplace/Sandwich-Wrapped-Beeswax.jpg",
+      "eco": true,
     },
     {
-      "title": "Purple Dream Hoodie",
-      "price": 89,
-      "seller": "VibeWear",
+      "title": "Organic Bamboo Toothbrush (4-Pack)",
+      "price": 15.0,
+      "seller": "Fatima Alami",
+      "category": "Personal Care",
+      "image": "assets/images/marketplace/bamboo-toothbrush.jpg",
+      "eco": true,
+    },
+    {
+      "title": "Reusable Stainless Steel Water Bottle (500ml)",
+      "price": 35.0,
+      "seller": "Youssef Benali",
+      "category": "Hydration",
+      "image": "assets/images/marketplace/stainless-water-bottle.jpg",
+      "eco": true,
+    },
+    {
+      "title": "Organic Cotton Tote Bag - Natural Dye",
+      "price": 20.0,
+      "seller": "Amina Khalil",
       "category": "Fashion",
-      "image":
-          "https://m.media-amazon.com/images/I/71E+ORYrkaL._AC_UF894,1000_QL80_.jpg", // Purple hoodie
+      "image": "assets/images/marketplace/organic-tote-bag.jpg",
+      "eco": true,
     },
     {
-      "title": "AirPods Pro 2",
-      "price": 249,
-      "seller": "AudioKing",
-      "category": "Electronics",
-      "image":
-          "https://gadgetsstore.co.in/wp-content/uploads/2023/10/gallery-8.jpg", // AirPods Pro
+      "title": "Bamboo Cutlery Set with Pouch",
+      "price": 18.0,
+      "seller": "Karim Zahir",
+      "category": "Travel",
+      "image": "assets/images/marketplace/bamboo-cutlery.jpg",
+      "eco": true,
     },
     {
-      "title": "RGB Gaming Chair",
-      "price": 429,
-      "seller": "ProSetup",
-      "category": "Furniture",
-      "image":
-          "https://www.costco.is/medias/sys_master/images/hdc/h15/279283586138142.jpg", // RGB Gaming Chair
+      "title": "Swedish Dishcloth Reusable Sponges (Set of 3)",
+      "price": 12.0,
+      "seller": "Layla Najjar",
+      "category": "Kitchen",
+      "image": "assets/images/marketplace/swedish-dishcloth.jpg",
+      "eco": true,
     },
     {
-      "title": "Hand-Painted Sneakers",
-      "price": 320,
-      "seller": "ArtKicks",
+      "title": "Recycled Ocean Plastic Sunglasses",
+      "price": 45.0,
+      "seller": "Omar Haddad",
       "category": "Fashion",
-      "image":
-          "https://assets.maker-marketplace.com/128143_128143.435646.jpg", // Custom painted shoes
+      "image": "assets/images/marketplace/recycled-sunglasses.jpg",
+      "eco": true,
     },
     {
-      "title": "MacBook Pro M3 Max",
-      "price": 3499,
-      "seller": "PowerUser",
-      "category": "Electronics",
-      "image":
-          "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800&q=80", // MacBook Pro
-    },
-    {
-      "title": "Neon LED Lamp",
-      "price": 149,
-      "seller": "GlowLab",
-      "category": "Home",
-      "image":
-          "https://www.neonlampen.nl/cdn/shop/files/AfbeeldingvanWhatsAppop2024-04-05om10.18.27_18059d2f.jpg?v=1712505225", // Neon lamp
-    },
-    {
-      "title": "Custom Mechanical Keyboard",
-      "price": 289,
-      "seller": "KeyForge",
-      "category": "Electronics",
-      "image":
-          "https://goblintechkeys.com/cdn/shop/collections/custom-mechanical-keyboard-ansi-958359.jpg?v=1718072199&width=750", // Mechanical keyboard
+      "title": "Solid Shampoo Bar - Zero Waste",
+      "price": 22.0,
+      "seller": "Sofia Rahman",
+      "category": "Beauty",
+      "image": "assets/images/marketplace/shampoo-bar.jpg",
+      "eco": true,
     },
   ];
+
+  List<Map<String, dynamic>> get _filteredProducts {
+    if (_selectedCategory == "All") return _products;
+    return _products.where((p) => p["category"] == _selectedCategory).toList();
+  }
 
   void _onNavTap(int index) {
     if (_selectedIndex == index) return;
     setState(() => _selectedIndex = index);
-
     final pages = [
       const HomePage(),
       const GroupsPage(),
@@ -95,7 +99,6 @@ class _MarketplacePageState extends State<MarketplacePage> {
       const MarketplacePage(),
       const MorePage(),
     ];
-
     Navigator.pushReplacement(
       context,
       PageRouteBuilder(
@@ -108,6 +111,7 @@ class _MarketplacePageState extends State<MarketplacePage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final orbSize = size.width * 0.8;
 
     return Scaffold(
       extendBody: true,
@@ -127,21 +131,21 @@ class _MarketplacePageState extends State<MarketplacePage> {
         ),
         child: Stack(
           children: [
-            // Background orbs
+            // Background orbs – same as HomePage
             ...List.generate(
               6,
               (i) => Positioned(
-                top: 30 + i * (size.height * 0.17),
-                left: i.isEven ? -size.width * 0.4 : null,
-                right: i.isOdd ? -size.width * 0.4 : null,
+                top: 40 + i * (size.height * 0.16),
+                left: i.isEven ? -orbSize * 0.4 : null,
+                right: i.isOdd ? -orbSize * 0.4 : null,
                 child: Container(
-                  width: size.width * 0.85,
-                  height: size.width * 0.85,
+                  width: orbSize,
+                  height: orbSize,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     gradient: RadialGradient(
                       colors: [
-                        const Color(0xFFA855F7).withOpacity(0.38),
+                        const Color(0xFFA855F7).withOpacity(0.35),
                         Colors.transparent,
                       ],
                     ),
@@ -153,7 +157,7 @@ class _MarketplacePageState extends State<MarketplacePage> {
             SafeArea(
               child: Column(
                 children: [
-                  // Header
+                  // Header – same size & style as HomePage
                   Padding(
                     padding: EdgeInsets.symmetric(
                       horizontal: size.width * 0.06,
@@ -188,17 +192,15 @@ class _MarketplacePageState extends State<MarketplacePage> {
                     height: 56,
                     child: ListView(
                       scrollDirection: Axis.horizontal,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: size.width * 0.06,
-                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
                       children:
                           [
                             "All",
-                            "Electronics",
                             "Fashion",
-                            "Furniture",
+                            "Kitchen",
+                            "Beauty",
+                            "Travel",
                             "Home",
-                            "Art",
                           ].map((cat) {
                             bool isSelected = _selectedCategory == cat;
                             return GestureDetector(
@@ -214,8 +216,8 @@ class _MarketplacePageState extends State<MarketplacePage> {
                                   gradient: isSelected
                                       ? const LinearGradient(
                                           colors: [
-                                            Color(0xFFA855F7),
-                                            Color(0xFFE0AAFF),
+                                            Color.fromARGB(255, 76, 175, 80),
+                                            Color.fromARGB(255, 76, 175, 80),
                                           ],
                                         )
                                       : null,
@@ -254,24 +256,24 @@ class _MarketplacePageState extends State<MarketplacePage> {
                     ),
                   ),
 
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 16),
 
-                  // Products Grid
+                  // Product Grid
                   Expanded(
-                    child: GridView.builder(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: size.width * 0.06,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: GridView.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithMaxCrossAxisExtent(
+                              maxCrossAxisExtent: 220,
+                              crossAxisSpacing: 16,
+                              mainAxisSpacing: 16,
+                              childAspectRatio: 0.65,
+                            ),
+                        itemCount: _filteredProducts.length,
+                        itemBuilder: (context, index) =>
+                            _productCard(_filteredProducts[index]),
                       ),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            childAspectRatio: 0.78,
-                            crossAxisSpacing: 16,
-                            mainAxisSpacing: 16,
-                          ),
-                      itemCount: _products.length,
-                      itemBuilder: (context, index) =>
-                          _productCard(_products[index], size),
                     ),
                   ),
                 ],
@@ -281,6 +283,7 @@ class _MarketplacePageState extends State<MarketplacePage> {
         ),
       ),
 
+      // Bottom Navigation Bar
       bottomNavigationBar: ClipRRect(
         borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
         child: BackdropFilter(
@@ -340,113 +343,157 @@ class _MarketplacePageState extends State<MarketplacePage> {
     );
   }
 
-  Widget _productCard(Map<String, dynamic> product, Size size) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(32),
-        border: Border.all(color: Colors.white.withOpacity(0.25), width: 1.5),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.4),
-            blurRadius: 25,
-            offset: const Offset(0, 12),
-          ),
-          BoxShadow(
-            color: const Color(0xFFA855F7).withOpacity(0.2),
-            blurRadius: 35,
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: ClipRRect(
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(32),
+  // Product Card – shows DT instead of $
+  Widget _productCard(Map<String, dynamic> product) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final imageHeight = constraints.maxHeight * 0.6;
+        final num priceNum = product["price"] as num;
+        final String priceText =
+            "${priceNum is int ? priceNum : priceNum.toStringAsFixed(1)} DT";
+
+        return Container(
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.09),
+            borderRadius: BorderRadius.circular(28),
+            border: Border.all(
+              color: Colors.white.withOpacity(0.2),
+              width: 1.5,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.4),
+                blurRadius: 20,
+                offset: const Offset(0, 10),
               ),
-              child: Image.network(
-                product["image"],
-                width: double.infinity,
-                fit: BoxFit.cover,
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) return child;
-                  return Container(
-                    color: Colors.white.withOpacity(0.1),
-                    child: const Center(
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: Color(0xFFA855F7),
+              BoxShadow(
+                color: const Color(0xFFA855F7).withOpacity(0.15),
+                blurRadius: 30,
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ClipRRect(
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(28),
+                ),
+                child: SizedBox(
+                  width: double.infinity,
+                  height: imageHeight,
+                  child: Image.asset(
+                    product["image"],
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => Container(
+                      color: Colors.white.withOpacity(0.08),
+                      child: const Icon(
+                        Icons.broken_image,
+                        color: Colors.white38,
+                        size: 50,
                       ),
                     ),
-                  );
-                },
-                errorBuilder: (_, __, ___) => Container(
-                  color: Colors.white.withOpacity(0.1),
-                  child: const Icon(
-                    Icons.broken_image,
-                    color: Colors.white54,
-                    size: 40,
                   ),
                 ),
               ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  product["title"],
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(14, 8, 14, 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        product["title"],
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 13.5,
+                          fontWeight: FontWeight.bold,
+                          height: 1.2,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        "by ${product["seller"]}",
+                        style: const TextStyle(
+                          color: Colors.white60,
+                          fontSize: 11.5,
+                        ),
+                      ),
+                      Text(
+                        priceText, // 25 DT, 35 DT, etc.
+                        style: const TextStyle(
+                          color: Color.fromARGB(255, 76, 175, 80),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                    ],
                   ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  "by ${product["seller"]}",
-                  style: const TextStyle(color: Colors.white60, fontSize: 13),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  "\$${product["price"]}",
-                  style: const TextStyle(
-                    color: Color(0xFFA855F7),
-                    fontSize: 20,
-                    fontWeight: FontWeight.w900,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
-  Widget _glowText(String text, double fontSize) {
-    return Text(
-      text,
-      style: TextStyle(
-        fontSize: fontSize,
-        fontWeight: FontWeight.w900,
-        foreground: Paint()
-          ..shader = const LinearGradient(
-            colors: [Color(0xFFE0AAFF), Colors.white, Color(0xFFA855F7)],
-          ).createShader(const Rect.fromLTWH(0, 0, 400, 100)),
-        shadows: [
-          Shadow(
-            color: const Color(0xFFA855F7).withOpacity(0.9),
-            blurRadius: 35,
+  // Same glow text as HomePage
+  Widget _glowText(String text, double size) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Text(
+          text,
+          style: TextStyle(
+            fontSize: size,
+            fontWeight: FontWeight.w900,
+            foreground: Paint()
+              ..color = const Color.fromARGB(
+                170,
+                32,
+                186,
+                57,
+              ).withOpacity(0.95),
+            shadows: [
+              Shadow(
+                color: const Color.fromARGB(
+                  255,
+                  143,
+                  112,
+                  155,
+                ).withOpacity(0.9),
+                blurRadius: 30,
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+        ShaderMask(
+          blendMode: BlendMode.srcIn,
+          shaderCallback: (bounds) => const LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: [
+              Color.fromARGB(172, 60, 182, 64),
+              Color.fromARGB(172, 72, 255, 78),
+              Color.fromARGB(255, 192, 84, 255),
+              Color.fromARGB(255, 209, 129, 255),
+              Color.fromARGB(255, 192, 84, 255),
+            ],
+            stops: [0.0, 0.38, 0.48, 0.65, 1.0],
+          ).createShader(bounds),
+          child: Text(
+            text,
+            style: TextStyle(
+              fontSize: size,
+              fontWeight: FontWeight.w900,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

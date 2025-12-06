@@ -3,13 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:mygame/Groups.dart';
 import 'package:mygame/chats_page.dart';
 import 'package:mygame/marketplace.dart';
-
 import 'dart:ui';
-import 'package:mygame/more.dart';
+import 'more.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
-
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -18,17 +16,48 @@ class _HomePageState extends State<HomePage> {
   final TextEditingController _postController = TextEditingController();
   int _selectedIndex = 0;
   final Set<int> _likedPosts = {};
+
   final List<Map<String, dynamic>> _posts = [
     {
-      "name": "Sarah Ahmed",
-      "time": "2 hours ago",
-      "content": "Today was a beautiful day full of positivity and energy!",
+      "name": "Youssef",
+      "username": "youssef.trabelsi",
+      "image": "assets/images/people/person1.jpg",
+      "content": "Nettoyage de plage à Hammamet! 15kg de plastique ramassés.",
+      "time": "1 hour ago",
+      "photo": "assets/images/posts/post1.jpg",
     },
     {
-      "name": "Leen Mohammed",
-      "time": "5 hours ago",
+      "name": "Sarra",
+      "username": "sarra.benali",
+      "image": "assets/images/people/person2.jpg",
       "content":
-          "I love coffee in the morning... the perfect start to the day!",
+          "New collection made from recycled clothes! Upcycling is the future, w zid fih el style tunisien",
+      "time": "3 hours ago",
+    },
+    {
+      "name": "Amine",
+      "username": "amine.dev",
+      "image": "assets/images/people/person3.jpg",
+      "content":
+          "Récemment installé des panneaux solaires wa7adkom! Facture d’électricité = 0 cette fois, w n7ebbou our planet",
+      "time": "5 hours ago",
+    },
+    {
+      "name": "Mariam",
+      "username": "mariam.artt",
+      "image": "assets/images/people/person4.jpg",
+      "content":
+          "Souk day mais zero-waste! My tote bag w 9ahewti fi kess réutilisable. No plastic, just vibes",
+      "time": "7 hours ago",
+      "photo": "assets/images/posts/post2.jpg",
+    },
+    {
+      "name": "Eco Tunisia",
+      "username": "ecotunisia",
+      "image": "assets/images/groups/eco-tunisia.jpg",
+      "content":
+          "Tounes 9adra tna9ess 60% men el plastique ken kolna nbaddlou lel sacs réutilisables. Let’s do it, ya tounes!",
+      "time": "12 hours ago",
     },
   ];
 
@@ -36,72 +65,35 @@ class _HomePageState extends State<HomePage> {
     if (_postController.text.trim().isEmpty) return;
     setState(() {
       _posts.insert(0, {
-        "name": "Abeer",
-        "time": "Just now",
+        "name": "You",
+        "username": "you",
+        "image": "assets/images/avatar.png",
         "content": _postController.text.trim(),
+        "time": "Just now",
       });
       _postController.clear();
     });
   }
 
   void _onNavTap(int index) {
-    if (_selectedIndex == index) return; // Prevent rebuild if already on page
+    if (_selectedIndex == index) return;
     setState(() => _selectedIndex = index);
 
-    if (index == 0) {
-      Navigator.pushReplacement(
-        context,
-        PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) =>
-              const HomePage(),
-          transitionDuration: Duration.zero,
-          reverseTransitionDuration: Duration.zero,
-        ),
-      );
-    }
-    if (index == 1) {
-      Navigator.pushReplacement(
-        context,
-        PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) =>
-              const GroupsPage(),
-          transitionDuration: Duration.zero,
-          reverseTransitionDuration: Duration.zero,
-        ),
-      );
-    } else if (index == 2) {
-      Navigator.pushReplacement(
-        context,
-        PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) =>
-              const ChatsPage(),
-          transitionDuration: Duration.zero,
-          reverseTransitionDuration: Duration.zero,
-        ),
-      );
-    } else if (index == 3) {
-      // AI
-      Navigator.pushReplacement(
-        context,
-        PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) =>
-              const MarketplacePage(),
-          transitionDuration: Duration.zero,
-          reverseTransitionDuration: Duration.zero,
-        ),
-      );
-    } else if (index == 4) {
-      // More
-      Navigator.pushReplacement(
-        context,
-        PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) =>
-              const MorePage(),
-          transitionDuration: Duration.zero,
-          reverseTransitionDuration: Duration.zero,
-        ),
-      );
-    }
+    final pages = [
+      const HomePage(),
+      const GroupsPage(),
+      const ChatsPage(),
+      const MarketplacePage(),
+      const MorePage(),
+    ];
+
+    Navigator.pushReplacement(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => pages[index],
+        transitionDuration: Duration.zero,
+      ),
+    );
   }
 
   @override
@@ -109,10 +101,12 @@ class _HomePageState extends State<HomePage> {
     final size = MediaQuery.of(context).size;
     final double orbSize = size.width * 0.8;
 
+    const Color ecoGreen = Color(0xFF4CAF50);
+    const Color purpleMain = Color(0xFFA855F7);
+
     return Scaffold(
       extendBody: true,
       extendBodyBehindAppBar: true,
-
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -128,7 +122,6 @@ class _HomePageState extends State<HomePage> {
         ),
         child: Stack(
           children: [
-            // Floating purple orbs — cinematic background
             ...List.generate(
               6,
               (i) => Positioned(
@@ -142,7 +135,7 @@ class _HomePageState extends State<HomePage> {
                     shape: BoxShape.circle,
                     gradient: RadialGradient(
                       colors: [
-                        const Color(0xFFA855F7).withOpacity(0.35),
+                        purpleMain.withOpacity(0.35),
                         Colors.transparent,
                       ],
                     ),
@@ -154,7 +147,6 @@ class _HomePageState extends State<HomePage> {
             SafeArea(
               child: Column(
                 children: [
-                  // Premium Glass AppBar
                   Padding(
                     padding: EdgeInsets.symmetric(
                       horizontal: size.width * 0.06,
@@ -164,27 +156,14 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         _glowText("ECOMIND", size.width * 0.09),
                         const Spacer(),
-
-                        // Notification Bell (simple & elegant)
                         IconButton(
                           icon: Icon(
                             Icons.notifications_none,
                             color: Colors.white70,
                             size: size.width * 0.075,
                           ),
-                          onPressed: () {
-                            // Optional: show snackbar or navigate later
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("Notifications"),
-                                backgroundColor: Color(0xFFA855F7),
-                                behavior: SnackBarBehavior.floating,
-                              ),
-                            );
-                          },
+                          onPressed: () {},
                         ),
-
-                        // Search Icon (unchanged, just moved right)
                         IconButton(
                           icon: Icon(
                             Icons.search,
@@ -204,8 +183,6 @@ class _HomePageState extends State<HomePage> {
                       ),
                       children: [
                         const SizedBox(height: 12),
-
-                        // Create Post Card
                         _glassCard(
                           padding: EdgeInsets.all(size.width * 0.05),
                           child: Column(
@@ -217,9 +194,6 @@ class _HomePageState extends State<HomePage> {
                                     backgroundImage: const AssetImage(
                                       "assets/images/avatar.png",
                                     ),
-                                    backgroundColor: Colors.white.withOpacity(
-                                      0.2,
-                                    ),
                                   ),
                                   SizedBox(width: size.width * 0.04),
                                   Expanded(
@@ -229,7 +203,7 @@ class _HomePageState extends State<HomePage> {
                                         color: Colors.white,
                                       ),
                                       decoration: InputDecoration(
-                                        hintText: "What's on your mind?",
+                                        hintText: "Share your eco moment...",
                                         hintStyle: TextStyle(
                                           color: Colors.white60,
                                           fontSize: size.width * 0.045,
@@ -239,10 +213,11 @@ class _HomePageState extends State<HomePage> {
                                         fillColor: Colors.white.withOpacity(
                                           0.1,
                                         ),
-                                        contentPadding: EdgeInsets.symmetric(
-                                          horizontal: 20,
-                                          vertical: size.height * 0.02,
-                                        ),
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                              horizontal: 20,
+                                              vertical: 16,
+                                            ),
                                         enabledBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.circular(
                                             30,
@@ -253,8 +228,8 @@ class _HomePageState extends State<HomePage> {
                                           borderRadius: BorderRadius.circular(
                                             30,
                                           ),
-                                          borderSide: BorderSide(
-                                            color: Colors.white54,
+                                          borderSide: const BorderSide(
+                                            color: ecoGreen,
                                             width: 2,
                                           ),
                                         ),
@@ -264,7 +239,6 @@ class _HomePageState extends State<HomePage> {
                                 ],
                               ),
                               SizedBox(height: size.height * 0.03),
-
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
@@ -272,7 +246,7 @@ class _HomePageState extends State<HomePage> {
                                   _glassActionButton(
                                     Icons.photo_library_outlined,
                                     "Photo",
-                                    Colors.purpleAccent,
+                                    ecoGreen,
                                   ),
                                   _glassActionButton(
                                     Icons.gif_box_outlined,
@@ -280,19 +254,22 @@ class _HomePageState extends State<HomePage> {
                                     Colors.cyanAccent,
                                   ),
                                   _glassActionButton(
-                                    Icons.mood,
-                                    "Feeling",
-                                    Colors.pinkAccent,
+                                    Icons.eco,
+                                    "Eco Tip",
+                                    ecoGreen,
                                   ),
                                 ],
                               ),
                               SizedBox(height: size.height * 0.03),
-
                               ElevatedButton(
                                 onPressed: _createPost,
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFFA855F7),
-                                  foregroundColor: Colors.white,
+                                  backgroundColor: const Color.fromARGB(
+                                    255,
+                                    76,
+                                    175,
+                                    80,
+                                  ),
                                   padding: EdgeInsets.symmetric(
                                     vertical: size.height * 0.02,
                                     horizontal: size.width * 0.2,
@@ -301,26 +278,23 @@ class _HomePageState extends State<HomePage> {
                                     borderRadius: BorderRadius.circular(30),
                                   ),
                                   elevation: 15,
-                                  shadowColor: const Color(
-                                    0xFFA855F7,
-                                  ).withOpacity(0.7),
+                                  shadowColor: ecoGreen.withOpacity(0.7),
                                 ),
-                                child: Text(
-                                  "Post",
+                                child: const Text(
+                                  "Share",
                                   style: TextStyle(
-                                    fontSize: size.width * 0.05,
+                                    fontSize: 18,
                                     fontWeight: FontWeight.bold,
+                                    color: Color.fromARGB(255, 255, 255, 255),
                                   ),
                                 ),
                               ),
-                              SizedBox(height: size.height * 0.01),
                             ],
                           ),
                         ),
 
                         SizedBox(height: size.height * 0.025),
 
-                        // Posts Feed
                         ..._posts.asMap().entries.map((entry) {
                           int index = entry.key;
                           var post = entry.value;
@@ -331,6 +305,7 @@ class _HomePageState extends State<HomePage> {
                             child: _glassPostCard(post, size, index),
                           );
                         }),
+
                         SizedBox(height: size.height * 0.15),
                       ],
                     ),
@@ -342,7 +317,6 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
 
-      // FINAL 5-TAB PREMIUM GLASS BOTTOM NAVIGATION BAR
       bottomNavigationBar: ClipRRect(
         borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
         child: BackdropFilter(
@@ -362,7 +336,7 @@ class _HomePageState extends State<HomePage> {
               currentIndex: _selectedIndex,
               onTap: _onNavTap,
               backgroundColor: Colors.transparent,
-              selectedItemColor: const Color(0xFFA855F7),
+              selectedItemColor: purpleMain,
               unselectedItemColor: Colors.white60,
               selectedFontSize: 12,
               unselectedFontSize: 11,
@@ -390,7 +364,6 @@ class _HomePageState extends State<HomePage> {
                   ),
                   label: "Market",
                 ),
-
                 BottomNavigationBarItem(
                   icon: Icon(Icons.menu, size: size.width * 0.07),
                   label: "More",
@@ -403,7 +376,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // Glass Card
   Widget _glassCard({required Widget child, EdgeInsetsGeometry? padding}) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8),
@@ -428,7 +400,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // Action Buttons (Photo/GIF/Feeling)
   Widget _glassActionButton(IconData icon, String label, Color color) {
     return Column(
       children: [
@@ -458,8 +429,10 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // Post Card
   Widget _glassPostCard(Map<String, dynamic> post, Size size, int index) {
+    final bool hasPhoto = post["photo"] != null;
+    final String profileImage = post["image"] ?? "assets/images/avatar.png";
+
     return _glassCard(
       padding: EdgeInsets.all(size.width * 0.05),
       child: Column(
@@ -469,7 +442,7 @@ class _HomePageState extends State<HomePage> {
             children: [
               CircleAvatar(
                 radius: size.width * 0.065,
-                backgroundImage: const AssetImage("assets/images/avatar.png"),
+                backgroundImage: AssetImage(profileImage),
               ),
               SizedBox(width: size.width * 0.03),
               Column(
@@ -500,6 +473,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
           ),
+
           SizedBox(height: size.height * 0.02),
           Text(
             post["content"],
@@ -509,13 +483,32 @@ class _HomePageState extends State<HomePage> {
               height: 1.6,
             ),
           ),
+
+          if (hasPhoto) ...[
+            SizedBox(height: size.height * 0.02),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Image.asset(
+                post["photo"],
+                width: double.infinity,
+                height: size.height * 0.35,
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) => Container(
+                  height: size.height * 0.35,
+                  color: Colors.white.withOpacity(0.1),
+                  child: const Icon(Icons.eco, color: Colors.white54, size: 50),
+                ),
+              ),
+            ),
+          ],
+
           SizedBox(height: size.height * 0.025),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _actionBtn("Like", Icons.thumb_up_off_alt, index),
-              _actionBtn("Comment", Icons.comment, -1), // ← pass dummy index
-              _actionBtn("Share", Icons.share, -1), // ← pass dummy index
+              _actionBtn("Like", Icons.thumb_up_off_alt, size, index),
+              _actionBtn("Comment", Icons.comment, size),
+              _actionBtn("Share", Icons.share, size),
             ],
           ),
         ],
@@ -523,47 +516,48 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _actionBtn(String label, IconData icon, [int postIndex = -1]) {
+  Widget _actionBtn(
+    String label,
+    IconData icon,
+    Size size, [
+    int postIndex = -1,
+  ]) {
     final bool isLiked = postIndex != -1 && _likedPosts.contains(postIndex);
+    const Color ecoGreen = Color(0xFF4CAF50);
 
-    // Force the label to always be "Liked" length (6 characters) by using invisible text
     return TextButton.icon(
       onPressed: postIndex != -1
-          ? () {
-              setState(() {
-                if (isLiked) {
-                  _likedPosts.remove(postIndex);
-                } else {
-                  _likedPosts.add(postIndex);
-                }
-              });
-            }
+          ? () => setState(
+              () => isLiked
+                  ? _likedPosts.remove(postIndex)
+                  : _likedPosts.add(postIndex),
+            )
           : null,
       icon: Icon(
         isLiked ? Icons.thumb_up : icon,
-        color: isLiked ? const Color(0xFFA855F7) : Colors.white70,
-        size: MediaQuery.of(context).size.width * 0.055,
+        color: isLiked ? ecoGreen : Colors.white70,
+        size: size.width * 0.055,
       ),
       label: Stack(
         children: [
-          // Invisible "Liked" text to reserve exact space
           Opacity(
             opacity: 0,
             child: Text(
-              "Liked", // longest text
+              "Liked",
               style: TextStyle(
-                fontSize: MediaQuery.of(context).size.width * 0.038,
+                fontSize: size.width * 0.038,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
-          // Actual visible text on top
           Text(
             isLiked ? "Liked" : label,
             style: TextStyle(
-              color: isLiked ? const Color(0xFFA855F7) : Colors.white70,
+              color: isLiked
+                  ? const Color.fromARGB(255, 76, 175, 80)
+                  : Colors.white, // Share & Comment always white
               fontWeight: isLiked ? FontWeight.bold : FontWeight.normal,
-              fontSize: MediaQuery.of(context).size.width * 0.038,
+              fontSize: size.width * 0.038,
             ),
           ),
         ],
@@ -572,20 +566,60 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _glowText(String text, double size) {
-    return Text(
-      text,
-      style: TextStyle(
-        fontSize: size,
-        fontWeight: FontWeight.w900,
-        foreground: Paint()
-          ..shader = LinearGradient(
-            colors: [Color(0xFFE0AAFF), Colors.white, Color(0xFFA855F7)],
-          ).createShader(Rect.fromLTWH(0, 0, 400, 100)),
-        shadows: [
-          Shadow(color: Color(0xFFA855F7).withOpacity(0.9), blurRadius: 30),
-          Shadow(color: Colors.white.withOpacity(0.4), blurRadius: 60),
-        ],
-      ),
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Text(
+          text,
+          style: TextStyle(
+            fontSize: size,
+            fontWeight: FontWeight.w900,
+            foreground: Paint()
+              ..color = const Color.fromARGB(
+                170,
+                32,
+                186,
+                57,
+              ).withOpacity(0.95),
+            shadows: [
+              Shadow(
+                color: const Color.fromARGB(
+                  255,
+                  143,
+                  112,
+                  155,
+                ).withOpacity(0.9),
+                blurRadius: 30,
+              ),
+            ],
+          ),
+        ),
+
+        // Layer 3: The actual text with your exact gradient — no white anywhere
+        ShaderMask(
+          blendMode: BlendMode.srcIn,
+          shaderCallback: (bounds) => const LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: [
+              Color.fromARGB(172, 60, 182, 64), // ECO start
+              Color.fromARGB(172, 72, 255, 78), // ECO soft
+              Color.fromARGB(255, 192, 84, 255), // Transition
+              Color.fromARGB(255, 209, 129, 255), // MIND main
+              Color.fromARGB(255, 192, 84, 255), // MIND end
+            ],
+            stops: [0.0, 0.38, 0.48, 0.65, 1.0],
+          ).createShader(bounds),
+          child: Text(
+            text,
+            style: TextStyle(
+              fontSize: size,
+              fontWeight: FontWeight.w900,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

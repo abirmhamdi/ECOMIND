@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # mygame
 
 A new Flutter project.
@@ -14,3 +15,7 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+=======
+# ECOMIND
+herotopia TSYP
+>>>>>>> 18f3740cee261b954817198db8889eaec7f13fd3
